@@ -1,11 +1,82 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Github, Linkedin, Send, Clock } from 'lucide-react';
+import { Mail, Phone, MapPin, Github, Linkedin, Send, Clock, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import AnimatedCursor from 'react-animated-cursor';
+import emailjs from '@emailjs/browser';
+import { EMAILJS_CONFIG } from '../../lib/emailjs-config';
 
 export default function Contato() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+    setErrorMessage('');
+
+    // Validação básica
+    if (!formData.name || !formData.email || !formData.subject || !formData.message) {
+      setSubmitStatus('error');
+      setErrorMessage('Por favor, preencha todos os campos.');
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Validação de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setSubmitStatus('error');
+      setErrorMessage('Por favor, insira um email válido.');
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+        to_email: EMAILJS_CONFIG.TO_EMAIL,
+      };
+
+      await emailjs.send(
+        EMAILJS_CONFIG.SERVICE_ID,
+        EMAILJS_CONFIG.TEMPLATE_ID,
+        templateParams,
+        EMAILJS_CONFIG.PUBLIC_KEY
+      );
+
+      setSubmitStatus('success');
+      setFormData({ name: '', email: '', subject: '', message: '' });
+
+    } catch (error) {
+      console.error('Erro ao enviar email:', error);
+      setSubmitStatus('error');
+      setErrorMessage('Erro ao enviar mensagem. Tente novamente mais tarde.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white px-4 py-10 font-sans relative overflow-hidden">
       <AnimatedCursor
@@ -181,7 +252,7 @@ export default function Contato() {
               <Send className="w-6 h-6" />
               Envie uma Mensagem
             </h2>
-            <form className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -190,8 +261,12 @@ export default function Contato() {
                 <label className="block text-sm font-mono text-gray-400 mb-2">Nome</label>
                 <input
                   type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-3 bg-[#2d2d2d] border border-[#6b7280]/30 rounded-lg text-white placeholder-gray-500 focus:border-[#9ca3af] focus:outline-none focus:ring-2 focus:ring-[#9ca3af]/20 transition-all duration-300"
                   placeholder="Seu nome completo"
+                  required
                 />
               </motion.div>
               <motion.div
@@ -202,8 +277,12 @@ export default function Contato() {
                 <label className="block text-sm font-mono text-gray-400 mb-2">Email</label>
                 <input
                   type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-3 bg-[#2d2d2d] border border-[#6b7280]/30 rounded-lg text-white placeholder-gray-500 focus:border-[#9ca3af] focus:outline-none focus:ring-2 focus:ring-[#9ca3af]/20 transition-all duration-300"
                   placeholder="seu@email.com"
+                  required
                 />
               </motion.div>
               <motion.div
@@ -214,8 +293,12 @@ export default function Contato() {
                 <label className="block text-sm font-mono text-gray-400 mb-2">Assunto</label>
                 <input
                   type="text"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-3 bg-[#2d2d2d] border border-[#6b7280]/30 rounded-lg text-white placeholder-gray-500 focus:border-[#9ca3af] focus:outline-none focus:ring-2 focus:ring-[#9ca3af]/20 transition-all duration-300"
                   placeholder="Sobre o que você quer conversar?"
+                  required
                 />
               </motion.div>
               <motion.div
@@ -226,8 +309,12 @@ export default function Contato() {
                 <label className="block text-sm font-mono text-gray-400 mb-2">Mensagem</label>
                 <textarea
                   rows={5}
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-3 bg-[#2d2d2d] border border-[#6b7280]/30 rounded-lg text-white placeholder-gray-500 focus:border-[#9ca3af] focus:outline-none focus:ring-2 focus:ring-[#9ca3af]/20 transition-all duration-300 resize-none"
                   placeholder="Conte-me sobre seu projeto ou ideia..."
+                  required
                 ></textarea>
               </motion.div>
               <motion.button
@@ -237,11 +324,48 @@ export default function Contato() {
                 whileHover={{ scale: 1.02, boxShadow: "0 0 20px rgba(107, 114, 128, 0.3)" }}
                 whileTap={{ scale: 0.98 }}
                 type="submit"
-                className="w-full flex items-center justify-center space-x-3 px-6 py-4 bg-gradient-to-r from-gray-500 to-gray-400 text-white font-mono rounded-lg hover:from-gray-400 hover:to-gray-100 hover:text-gray-900 transition-all duration-300 shadow-lg"
+                disabled={isSubmitting}
+                className="w-full flex items-center justify-center space-x-3 px-6 py-4 bg-gradient-to-r from-gray-500 to-gray-400 text-white font-mono rounded-lg hover:from-gray-400 hover:to-gray-100 hover:text-gray-900 transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Send className="w-5 h-5" />
-                <span>Enviar Mensagem</span>
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <span>Enviando...</span>
+                  </>
+                ) : submitStatus === 'success' ? (
+                  <>
+                    <CheckCircle className="w-5 h-5" />
+                    <span>Mensagem Enviada!</span>
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-5 h-5" />
+                    <span>Enviar Mensagem</span>
+                  </>
+                )}
               </motion.button>
+
+              {submitStatus === 'error' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex items-center space-x-2 text-red-400 text-sm font-mono"
+                >
+                  <AlertCircle className="w-4 h-4" />
+                  <span>{errorMessage}</span>
+                </motion.div>
+              )}
+
+              {submitStatus === 'success' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex items-center space-x-2 text-green-400 text-sm font-mono"
+                >
+                  <CheckCircle className="w-4 h-4" />
+                  <span>Mensagem enviada com sucesso! Entrarei em contato em breve.</span>
+                </motion.div>
+              )}
             </form>
           </motion.div>
         </div>
