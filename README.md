@@ -1,4 +1,4 @@
-# 🚀 Yonki Dev - Portfólio Moderno
+# Yonki Dev - Portfólio
 
 <div align="center">
   <img src="https://img.shields.io/badge/Next.js-15.5.2-black?style=for-the-badge&logo=next.js" alt="Next.js"/>
@@ -8,19 +8,6 @@
 </div>
 
 <br/>
-
-<div align="center">
-  <h3>🎨 Portfólio Interativo com Animações Avançadas</h3>
-  <p>Experiência digital moderna com efeitos visuais impressionantes</p>
-</div>
-
-## ✨ Visão Geral
-
-Este é um portfólio moderno e interativo desenvolvido com as tecnologias mais recentes do ecossistema React/Next.js. O projeto apresenta uma experiência visual rica com animações fluidas, efeitos de partículas, cursor animado e design responsivo.
-
-## 🎯 Demonstração
-
-🌐 **[Acesse o Portfólio](http://localhost:3000)** (quando executando localmente)
 
 ## 🛠️ Stack Tecnológico
 
@@ -131,126 +118,6 @@ yonkiblog/
   --accent-cream: #f9fafb;    /* Creme para destaques */
 }
 ```
-
-## 📦 Instalação e Execução
-
-### **Pré-requisitos**
-- Node.js 18+
-- npm ou yarn
-
-### **Instalação**
-```bash
-# Clone o repositório
-git clone <repository-url>
-cd yonkiblog
-
-# Instale as dependências
-npm install
-```
-
-### **Execução**
-```bash
-# Modo desenvolvimento
-npm run dev
-
-# Build para produção
-npm run build
-
-# Executar em produção
-npm start
-```
-
-### **Acesso**
-Abra [http://localhost:3000](http://localhost:3000) no navegador.
-
-## 🔧 Scripts Disponíveis
-
-```json
-{
-  "dev": "next dev",           // Inicia servidor de desenvolvimento
-  "build": "next build",       // Build para produção
-  "start": "next start"        // Inicia servidor de produção
-}
-```
-
-## 🎯 Páginas do Portfólio
-
-### **🏠 Página Inicial**
-- Hero section com animações
-- Apresentação dinâmica com TypeAnimation
-- Botões de ação com efeitos hover
-- Fundo com partículas interativas
-- Efeito de confetti no botão "Vamos Conversar"
-
-### **👤 Sobre**
-- Biografia profissional
-- Habilidades técnicas em destaque
-- Experiência e trajetória
-- Valores e princípios
-
-### **💼 Projetos**
-- Showcase de projetos desenvolvidos
-- Links para repositórios GitHub
-- Tecnologias utilizadas
-- Descrições detalhadas
-
-### **🛠️ Habilidades**
-- Tecnologias dominadas
-- Níveis de proficiência
-- Certificações e conquistas
-- Áreas de especialização
-
-### **📞 Contato**
-- Formulário de contato
-- Links para redes sociais
-- Informações de contato direto
-- Localização
-
-## 🎨 Assets e Ícones
-
-### **Ícones Disponíveis**
-- **Tecnologias**: React, Next.js, TypeScript, Node.js, etc.
-- **Ferramentas**: Git, Docker, Figma, VS Code
-- **Plataformas**: Android, iOS, Web
-- **Bancos**: PostgreSQL, MongoDB, Firebase
-
-### **Logos**
-- Logos oficiais das tecnologias
-- Versões otimizadas em SVG
-- Consistência visual
-
-## 🔄 Próximas Implementações
-
-- [ ] Sistema de blog integrado
-- [ ] Modo claro/escuro
-- [ ] Internacionalização (i18n)
-- [ ] CMS para conteúdo dinâmico
-- [ ] Analytics e tracking
-- [ ] PWA (Progressive Web App)
-
-## 🤝 Contribuição
-
-Contribuições são bem-vindas! Sinta-se à vontade para:
-
-1. Fork o projeto
-2. Criar uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abrir um Pull Request
-
-## 📄 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
-
-## 👨‍💻 Autor
-
-**Yonki Dev**
-- **Portfólio**: [yonki.dev](https://yonki.dev)
-- **GitHub**: [@yonki](https://github.com/yonki)
-- **LinkedIn**: [Yonki Dev](https://linkedin.com/in/yonki)
-- **Email**: contato@yonki.dev
-
----
 
 <div align="center">
   <p>Feito com ❤️ usando Next.js, React e TypeScript</p>
